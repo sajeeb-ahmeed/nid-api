@@ -17,6 +17,7 @@ async function run() {
     try {
         await client.connect();
         const inventoryCollection = client.db('niduser').collection('niduser');
+        const userCollection = client.db('ownUser').collection('user');
         console.log('db connected');
 
         // AUTH
@@ -28,14 +29,6 @@ async function run() {
         //     res.send({ accessToken });
         // })
 
-
-        //SERVICES API
-        // app.get('/services', async (req, res) => {
-        //     const cursor = inventoryCollection.find()
-        //     const services = await cursor.toArray();
-        //     res.send(services)
-        // });
-
         // user nid 
         app.get('/usernid', async (req, res) => {
             const cursor = inventoryCollection.find()
@@ -43,11 +36,18 @@ async function run() {
             res.send(usernid)
         });
 
+        app.get('/user', async (req, res) => {
+            const cursor = userCollection.find()
+            const usernid = await cursor.toArray();
+            res.send(usernid)
+        });
+
         //ADD ITEM API
-        app.post('/usernid', async (req, res) => {
+        app.post('/user', async (req, res) => {
             const newItem = req.body;
-            const usernid = await inventoryCollection.insertOne(newItem);
+            const usernid = await userCollection.insertOne(newItem);
             res.send(usernid);
+            console.log(usernid);
         });
 
 
