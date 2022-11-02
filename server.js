@@ -42,6 +42,12 @@ async function run() {
             res.send(usernid)
         });
 
+        app.get('/lastuser', async (req, res) => {
+            const cursor = userCollection.find().sort({ _id: -1 }).limit(1)
+            const usernid = await cursor.toArray();
+            res.send(usernid)
+        });
+
         //ADD ITEM API
         app.post('/user', async (req, res) => {
             const newItem = req.body;
